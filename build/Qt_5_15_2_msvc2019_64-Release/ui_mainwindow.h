@@ -16,6 +16,7 @@
 #include <QtWidgets/QGroupBox>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QLabel>
+#include <QtWidgets/QListWidget>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QSlider>
@@ -45,9 +46,17 @@ public:
     QSlider *sliderLightLevel;
     QGroupBox *grpSound;
     QVBoxLayout *verticalLayout_3;
-    QHBoxLayout *horizontalLayout_3;
+    QListWidget *listAudioFiles;
+    QHBoxLayout *horizontalLayout_AddFile;
+    QPushButton *btnAddFile;
+    QSpacerItem *horizontalSpacer_3;
+    QGridLayout *gridLayout_3;
     QPushButton *btnPlay;
+    QPushButton *btnPlay1;
     QPushButton *btnStop;
+    QPushButton *btnPlay2;
+    QPushButton *btnPlay3;
+    QPushButton *btnPlay4;
     QHBoxLayout *horizontalLayout_4;
     QLabel *label_2;
     QSlider *sliderVolume;
@@ -114,7 +123,6 @@ public:
         font1.setFamily(QString::fromUtf8("Microsoft YaHei"));
         font1.setPointSize(16);
         font1.setBold(true);
-        font1.setWeight(75);
         btnOneKey->setFont(font1);
         btnOneKey->setCheckable(true);
 
@@ -159,20 +167,62 @@ public:
         grpSound->setObjectName(QString::fromUtf8("grpSound"));
         verticalLayout_3 = new QVBoxLayout(grpSound);
         verticalLayout_3->setObjectName(QString::fromUtf8("verticalLayout_3"));
-        horizontalLayout_3 = new QHBoxLayout();
-        horizontalLayout_3->setObjectName(QString::fromUtf8("horizontalLayout_3"));
+        listAudioFiles = new QListWidget(grpSound);
+        listAudioFiles->setObjectName(QString::fromUtf8("listAudioFiles"));
+        listAudioFiles->setMaximumSize(QSize(16777215, 80));
+        listAudioFiles->setStyleSheet(QString::fromUtf8("background-color: #252526; border: 1px solid #555;"));
+
+        verticalLayout_3->addWidget(listAudioFiles);
+
+        horizontalLayout_AddFile = new QHBoxLayout();
+        horizontalLayout_AddFile->setObjectName(QString::fromUtf8("horizontalLayout_AddFile"));
+        btnAddFile = new QPushButton(grpSound);
+        btnAddFile->setObjectName(QString::fromUtf8("btnAddFile"));
+        btnAddFile->setMaximumSize(QSize(80, 24));
+
+        horizontalLayout_AddFile->addWidget(btnAddFile);
+
+        horizontalSpacer_3 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayout_AddFile->addItem(horizontalSpacer_3);
+
+
+        verticalLayout_3->addLayout(horizontalLayout_AddFile);
+
+        gridLayout_3 = new QGridLayout();
+        gridLayout_3->setObjectName(QString::fromUtf8("gridLayout_3"));
         btnPlay = new QPushButton(grpSound);
         btnPlay->setObjectName(QString::fromUtf8("btnPlay"));
 
-        horizontalLayout_3->addWidget(btnPlay);
+        gridLayout_3->addWidget(btnPlay, 0, 0, 1, 1);
+
+        btnPlay1 = new QPushButton(grpSound);
+        btnPlay1->setObjectName(QString::fromUtf8("btnPlay1"));
+
+        gridLayout_3->addWidget(btnPlay1, 1, 1, 1, 1);
 
         btnStop = new QPushButton(grpSound);
         btnStop->setObjectName(QString::fromUtf8("btnStop"));
 
-        horizontalLayout_3->addWidget(btnStop);
+        gridLayout_3->addWidget(btnStop, 0, 1, 1, 1);
+
+        btnPlay2 = new QPushButton(grpSound);
+        btnPlay2->setObjectName(QString::fromUtf8("btnPlay2"));
+
+        gridLayout_3->addWidget(btnPlay2, 1, 0, 1, 1);
+
+        btnPlay3 = new QPushButton(grpSound);
+        btnPlay3->setObjectName(QString::fromUtf8("btnPlay3"));
+
+        gridLayout_3->addWidget(btnPlay3, 2, 0, 1, 1);
+
+        btnPlay4 = new QPushButton(grpSound);
+        btnPlay4->setObjectName(QString::fromUtf8("btnPlay4"));
+
+        gridLayout_3->addWidget(btnPlay4, 2, 1, 1, 1);
 
 
-        verticalLayout_3->addLayout(horizontalLayout_3);
+        verticalLayout_3->addLayout(gridLayout_3);
 
         horizontalLayout_4 = new QHBoxLayout();
         horizontalLayout_4->setObjectName(QString::fromUtf8("horizontalLayout_4"));
@@ -202,7 +252,6 @@ public:
         btnMic = new QPushButton(widgetMic);
         btnMic->setObjectName(QString::fromUtf8("btnMic"));
         btnMic->setMinimumSize(QSize(80, 80));
-        btnMic->setMaximumSize(QSize(80, 80));
 
         horizontalLayout_5->addWidget(btnMic);
 
@@ -274,7 +323,7 @@ public:
 
     void retranslateUi(QMainWindow *MainWindow)
     {
-        MainWindow->setWindowTitle(QCoreApplication::translate("MainWindow", "EchoControl System - \346\210\230\346\234\257\346\216\247\345\210\266\347\273\210\347\253\257", nullptr));
+        MainWindow->setWindowTitle(QCoreApplication::translate("MainWindow", "EchoControl", nullptr));
         lblVideoPlaceholder->setText(QCoreApplication::translate("MainWindow", "\346\227\240\350\247\206\351\242\221\344\277\241\345\217\267", nullptr));
         btnOneKey->setText(QCoreApplication::translate("MainWindow", "\360\237\224\264 \344\270\200\351\224\256\346\213\222\346\255\242\345\220\257\345\212\250", nullptr));
         grpLight->setTitle(QCoreApplication::translate("MainWindow", "\345\274\272\345\205\211\346\216\247\345\210\266 (Light)", nullptr));
@@ -282,8 +331,13 @@ public:
         btnStrobe->setText(QCoreApplication::translate("MainWindow", "\351\242\221\351\227\252", nullptr));
         label->setText(QCoreApplication::translate("MainWindow", "\344\272\256\345\272\246:", nullptr));
         grpSound->setTitle(QCoreApplication::translate("MainWindow", "\345\274\272\345\243\260\346\216\247\345\210\266 (Sound)", nullptr));
-        btnPlay->setText(QCoreApplication::translate("MainWindow", "\342\226\266 \346\222\255\346\224\276", nullptr));
+        btnAddFile->setText(QCoreApplication::translate("MainWindow", "+ \346\267\273\345\212\240\346\226\207\344\273\266", nullptr));
+        btnPlay->setText(QCoreApplication::translate("MainWindow", "\342\226\266 \346\222\255\346\224\276\351\200\211\344\270\255", nullptr));
+        btnPlay1->setText(QCoreApplication::translate("MainWindow", "\345\276\252\347\216\257\346\222\255\346\224\276", nullptr));
         btnStop->setText(QCoreApplication::translate("MainWindow", "\342\226\240 \345\201\234\346\255\242", nullptr));
+        btnPlay2->setText(QCoreApplication::translate("MainWindow", "\350\216\267\345\217\226\351\237\263\351\242\221\345\210\227\350\241\250", nullptr));
+        btnPlay3->setText(QCoreApplication::translate("MainWindow", "\344\270\212\344\270\200\346\233\262", nullptr));
+        btnPlay4->setText(QCoreApplication::translate("MainWindow", "\344\270\213\344\270\200\346\233\262", nullptr));
         label_2->setText(QCoreApplication::translate("MainWindow", "\351\237\263\351\207\217:", nullptr));
         btnMic->setText(QCoreApplication::translate("MainWindow", "\346\214\211\344\275\217\n"
 "\345\226\212\350\257\235", nullptr));

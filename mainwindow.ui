@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>EchoControl System - 战术控制终端</string>
+   <string>EchoControl</string>
   </property>
   <property name="styleSheet">
    <string notr="true"/>
@@ -33,7 +33,6 @@
     <property name="bottomMargin">
      <number>0</number>
     </property>
-    <!-- 左侧：视频监控区 -->
     <item>
      <widget class="QFrame" name="frameVideo">
       <property name="styleSheet">
@@ -68,8 +67,6 @@
       </layout>
      </widget>
     </item>
-    
-    <!-- 右侧：控制面板区 -->
     <item>
      <widget class="QFrame" name="frameControl">
       <property name="styleSheet">
@@ -94,8 +91,6 @@
        <property name="bottomMargin">
         <number>20</number>
        </property>
-       
-       <!-- 1. 顶部：一键拒止按钮 -->
        <item>
         <widget class="QPushButton" name="btnOneKey">
          <property name="minimumSize">
@@ -108,7 +103,6 @@
           <font>
            <family>Microsoft YaHei</family>
            <pointsize>16</pointsize>
-           <weight>75</weight>
            <bold>true</bold>
           </font>
          </property>
@@ -120,8 +114,6 @@
          </property>
         </widget>
        </item>
-       
-       <!-- 2. 强光控制 -->
        <item>
         <widget class="QGroupBox" name="grpLight">
          <property name="title">
@@ -169,8 +161,6 @@
          </layout>
         </widget>
        </item>
-       
-       <!-- 3. 强声控制 -->
        <item>
         <widget class="QGroupBox" name="grpSound">
          <property name="title">
@@ -178,18 +168,89 @@
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_3">
           <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_3">
+           <widget class="QListWidget" name="listAudioFiles">
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>80</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">background-color: #252526; border: 1px solid #555;</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_AddFile">
             <item>
-             <widget class="QPushButton" name="btnPlay">
+             <widget class="QPushButton" name="btnAddFile">
+              <property name="maximumSize">
+               <size>
+                <width>80</width>
+                <height>24</height>
+               </size>
+              </property>
               <property name="text">
-               <string>▶ 播放</string>
+               <string>+ 添加文件</string>
               </property>
              </widget>
             </item>
             <item>
+             <spacer name="horizontalSpacer_3">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QGridLayout" name="gridLayout_3">
+            <item row="0" column="0">
+             <widget class="QPushButton" name="btnPlay">
+              <property name="text">
+               <string>▶ 播放选中</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QPushButton" name="btnPlay">
+              <property name="text">
+               <string>循环播放</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
              <widget class="QPushButton" name="btnStop">
               <property name="text">
                <string>■ 停止</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QPushButton" name="btnPlay">
+              <property name="text">
+               <string>获取音频列表</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="0">
+             <widget class="QPushButton" name="btnPlay">
+              <property name="text">
+               <string>上一曲</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="1">
+             <widget class="QPushButton" name="btnPlay">
+              <property name="text">
+               <string>下一曲</string>
               </property>
              </widget>
             </item>
@@ -240,12 +301,6 @@
                  <height>80</height>
                 </size>
                </property>
-               <property name="maximumSize">
-                <size>
-                 <width>80</width>
-                 <height>80</height>
-                </size>
-               </property>
                <property name="text">
                 <string>按住
 喊话</string>
@@ -271,8 +326,6 @@
          </layout>
         </widget>
        </item>
-       
-       <!-- 4. 云台控制 -->
        <item>
         <widget class="QGroupBox" name="grpPTZ">
          <property name="title">
@@ -330,7 +383,6 @@
          </layout>
         </widget>
        </item>
-       
        <item>
         <spacer name="verticalSpacer">
          <property name="orientation">

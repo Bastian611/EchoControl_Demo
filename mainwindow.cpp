@@ -2,77 +2,138 @@
 #include "ui_mainwindow.h"
 #include <QDebug>
 
-// CSS 样式表 (Dark Theme)
-const char* QSS_STYLE = R"(
-    QMainWindow { background-color: #1e1e1e; color: #f0f0f0; }
+// 解决乱码问题：强制源码为 UTF-8
+#if _MSC_VER >= 1600
+#pragma execution_character_set("utf-8")
+#endif
 
-    /* 右侧控制区 */
-    QFrame#frameControl {
-        background-color: #2D2D30;
-        border-left: 1px solid #3e3e42;
+const char* QSS_STYLE = R"(
+    /* 全局背景：使用带一点蓝调的深灰色，不那么死板 */
+    QMainWindow {
+        background-color: #383B40;
+        color: #E0E0E0;
+        font-family: "Microsoft YaHei UI", "Segoe UI";
+        font-size: 14px;
     }
 
-    /* 分组框 */
+    /* 左侧视频区 */
+    QFrame#frameVideo {
+        background-color: #000000;
+        border: 1px solid #555;
+        border-right: none;
+    }
+
+    /* 右侧控制栏：比背景稍深，形成层级 */
+    QFrame#frameControl {
+        background-color: #2D2F33;
+        border-left: 1px solid #1A1A1A;
+    }
+
+    /* 分组框：增加边框线和圆角 */
     QGroupBox {
-        border: 1px solid #454545;
-        border-radius: 4px;
-        margin-top: 20px;
+        border: 1px solid #505257;
+        border-radius: 6px;
+        margin-top: 22px; /* 留出标题空间 */
         font-weight: bold;
-        color: #cccccc;
+        color: #CCCCCC;
+        background-color: #33363B; /* 组内背景微亮 */
     }
     QGroupBox::title {
         subcontrol-origin: margin;
-        subcontrol-position: top center;
+        subcontrol-position: top left;
         padding: 0 5px;
+        left: 10px;
+        color: #00A3E0; /* 标题用亮蓝色 */
     }
 
-    /* 按钮通用 */
-    QPushButton {
-        background-color: #3e3e42;
-        border: 1px solid #555;
+    /* 列表框：音频列表 */
+    QListWidget {
+        background-color: #222;
+        border: 1px solid #444;
         border-radius: 4px;
+        color: #ddd;
+        outline: none;
+    }
+    QListWidget::item:selected {
+        background-color: #005A9E;
         color: white;
-        padding: 6px;
     }
-    QPushButton:hover { background-color: #505050; }
-    QPushButton:pressed { background-color: #007acc; }
-    QPushButton:checked { background-color: #007acc; border-color: #0099ff; }
 
-    /* 一键拒止按钮 (红色/绿色) */
+    /* 按钮通用：更立体的感觉 */
+    QPushButton {
+        background-color: #4A4D52;
+        border: 1px solid #3A3C40;
+        border-radius: 4px;
+        color: #FFFFFF;
+        padding: 6px 12px;
+    }
+    QPushButton:hover {
+        background-color: #5A5D63;
+        border: 1px solid #00A3E0; /* 悬停亮边 */
+    }
+    QPushButton:pressed {
+        background-color: #007ACC;
+        border-color: #005A9E;
+    }
+    QPushButton:checked {
+        background-color: #007ACC;
+        color: white;
+    }
+
+    /* 红色一键启动按钮 */
     QPushButton#btnOneKey {
-        background-color: #c0392b;
-        border: 2px solid #e74c3c;
-        font-size: 16px;
-    }
-    QPushButton#btnOneKey:checked {
-        background-color: #27ae60;
-        border-color: #2ecc71;
-    }
-
-    /* 喊话按钮 (圆形) */
-    QPushButton#btnMic {
-        border-radius: 40px;
-        background-color: #d35400;
-        border: 2px solid #e67e22;
+        background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #E74C3C, stop:1 #C0392B);
+        border: 1px solid #962D22;
+        border-radius: 8px;
+        font-size: 18px;
         font-weight: bold;
     }
-    QPushButton#btnMic:pressed {
-        background-color: #e67e22;
+    QPushButton#btnOneKey:hover {
+        background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #FF6B6B, stop:1 #D94538);
+    }
+    QPushButton#btnOneKey:checked {
+        background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #2ECC71, stop:1 #27AE60);
+        border: 1px solid #1E8449;
     }
 
-    /* 滑块 */
+    /* 圆形喊话按钮 */
+    QPushButton#btnMic {
+        border-radius: 40px;
+        background-color: #E67E22;
+        border: 3px solid #D35400;
+        font-weight: bold;
+        font-size: 14px;
+    }
+    QPushButton#btnMic:pressed {
+        background-color: #D35400;
+        border-color: #A04000;
+        margin: 2px; /* 按下位移感 */
+    }
+
+    /* 滑块美化 */
     QSlider::groove:horizontal {
-        border: 1px solid #333;
+        border: 1px solid #3A3C40;
         height: 6px;
         background: #202020;
+        margin: 2px 0;
         border-radius: 3px;
     }
     QSlider::handle:horizontal {
-        background: #007acc;
-        border: 1px solid #007acc;
+        background: #00A3E0;
+        border: 1px solid #00A3E0;
         width: 14px;
-        margin: -5px 0;
+        height: 14px;
+        margin: -4px 0;
         border-radius: 7px;
+    }
+    QSlider::sub-page:horizontal {
+        background: #007ACC;
+        border-radius: 3px;
+    }
+
+    /* 标签文字 */
+    QLabel {
+        color: #AAAAAA;
     }
 )";
 
@@ -122,7 +183,7 @@ void MainWindow::InitSDK() {
         // 注册回调 (注意 C 回调到 C++ 的转换)
         // 实际使用时建议使用全局静态函数做跳板，或者 event loop
     } else {
-        ui->lblVideoPlaceholder->setText("SDK 初始化失败");
+        ui->lblVideoPlaceholder->setText("无视频信号");
     }
 }
 
