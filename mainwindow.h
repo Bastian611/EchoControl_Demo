@@ -28,7 +28,7 @@ private slots:
     void on_btnStrobe_toggled(bool checked);
 
     // 强声
-    void on_btnPlay_clicked();
+    void on_btnPlay_clicked(int index);
     void on_btnStop_clicked();
     void on_sliderVolume_valueChanged(int value);
     void on_btnMic_pressed();

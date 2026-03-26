@@ -193,14 +193,11 @@ void MainWindow::on_btnOneKey_toggled(bool checked)
     if (checked) {
         ui->btnOneKey->setText("⚠️ 停止拒止 (运行中)");
         // 1. 开灯
-        ECCS_Light_SetLevel(m_hSystem, 100);
-        ECCS_Light_SetStrobe(m_hSystem, 1);
         ECCS_Light_SetSwitch(m_hSystem, 1);
-        // 2. 云台动作 (假设预置位1是攻击位)
-        ECCS_PTZ_Preset(m_hSystem, 2, 1);
+        // 2. 云台动作
+
         // 3. 播放警报
-        ECCS_Sound_SetVolume(m_hSystem, 100);
-        ECCS_Sound_Play(m_hSystem, "alarm.mp3", 1);
+        ECCS_Sound_OneKeyPlay(m_hSystem, 0);
 
         // 同步 UI 状态
         ui->btnLightSwitch->setChecked(true);
@@ -231,14 +228,14 @@ void MainWindow::on_btnStrobe_toggled(bool checked) {
 }
 
 // === 强声 ===
-void MainWindow::on_btnPlay_clicked() {
-    ECCS_Sound_Play(m_hSystem, "warning.mp3", 0);
+void MainWindow::on_btnPlay_clicked(int index) {
+    ECCS_Sound_Play(m_hSystem, 1, 0);
 }
 void MainWindow::on_btnStop_clicked() {
     ECCS_Sound_Stop(m_hSystem);
 }
 void MainWindow::on_sliderVolume_valueChanged(int value) {
-    ECCS_Sound_SetVolume(m_hSystem, value);
+    ECCS_Sound_SetPlayVolume(m_hSystem, value);
 }
 void MainWindow::on_btnMic_pressed() {
     ECCS_Sound_SetMic(m_hSystem, 1);
@@ -269,5 +266,5 @@ void MainWindow::onPtzReleased() {
 
 void MainWindow::on_btnPtzReset_clicked() {
     // 假设预置位 0 为归位
-    ECCS_PTZ_Preset(m_hSystem, 2, 0);
+    ECCS_PTZ_Reset(m_hSystem);
 }
