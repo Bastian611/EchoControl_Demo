@@ -145,6 +145,9 @@ MainWindow::MainWindow(QWidget *parent)
     InitStyle();
     InitSDK();
 
+    InitVideoUI();
+    StartAutoStream();
+
     // 绑定云台按住操作
     connect(ui->btnPtzUp, &QPushButton::pressed, this, &MainWindow::onPtzPressed);
     connect(ui->btnPtzDown, &QPushButton::pressed, this, &MainWindow::onPtzPressed);
@@ -185,6 +188,59 @@ void MainWindow::InitSDK() {
     } else {
         ui->lblVideoPlaceholder->setText("无视频信号");
     }
+}
+
+void MainWindow::InitVideoUI()
+{
+    // 1. 创建视频显示组件并嵌入 frameVideo
+    m_videoWidget = new QVideoWidget(ui->frameVideo);
+    m_player = new QMediaPlayer(this);
+    m_player->setVideoOutput(m_videoWidget);
+
+    // 强制视频组件填满父容器
+    QVBoxLayout* videoLayout = new QVBoxLayout(ui->frameVideo);
+    videoLayout->setContentsMargins(0, 0, 0, 0);
+    videoLayout->addWidget(m_videoWidget);
+    ui->frameVideo->setLayout(videoLayout);
+
+    // 2. 创建视频上方的浮动演示按钮 (Overlay)
+    m_videoOverlay = new QWidget(m_videoWidget);
+    QHBoxLayout* overlayLayout = new QHBoxLayout(m_videoOverlay);
+
+    // 创建演示按钮
+    QPushButton* btnZoomIn  = new QPushButton("+ 放大", m_videoOverlay);
+    QPushButton* btnZoomOut = new QPushButton("- 缩小", m_videoOverlay);
+    QPushButton* btnSnap    = new QPushButton("📸 抓拍", m_videoOverlay);
+
+    // 设置为不可用 (置灰，仅做演示)
+    btnZoomIn->setEnabled(false);
+    btnZoomOut->setEnabled(false);
+    btnSnap->setEnabled(false);
+
+    overlayLayout->addWidget(btnZoomIn);
+    overlayLayout->addWidget(btnZoomOut);
+    overlayLayout->addWidget(btnSnap);
+    overlayLayout->addStretch(); // 按钮靠左
+
+    // 样式设置：半透明黑色背景
+    m_videoOverlay->setStyleSheet("background: rgba(0, 0, 0, 100); border-radius: 5px;");
+    m_videoOverlay->setGeometry(10, 10, 280, 45); // 固定在视频左上角
+    m_videoOverlay->show(); // 确保显示在最上层
+}
+
+void MainWindow::StartAutoStream()
+{
+    // 隐藏占位文本标签
+    if(ui->lblVideoPlaceholder) ui->lblVideoPlaceholder->hide();
+
+    // 设置 RTSP 地址
+    QUrl url("rtsp://admin:123456@192.168.0.123/video1");
+
+    // 启动播放
+    m_player->setMedia(url);
+    m_player->play();
+
+    qDebug() << "Application launched: Auto-starting RTSP stream..." << url.toString();
 }
 
 // === 一键启动 ===

@@ -3,7 +3,10 @@
 
 #include <QMainWindow>
 #include <QTimer>
-// 引入你的 SDK
+#include <QMediaPlayer>
+#include <QVideoWidget>
+#include <QPushButton>
+#include <QHBoxLayout>
 #include "EchoControlSDK.h"
 
 QT_BEGIN_NAMESPACE
@@ -42,6 +45,8 @@ private slots:
 private:
     void InitStyle();
     void InitSDK();
+    void InitVideoUI(); // 初始化视频区域的按钮和播放器
+    void StartAutoStream();  // 启动自动拉流
 
     // 内部处理 SDK 回调 (Qt 线程安全处理)
     void HandleSDKCallback(int type, const void* data);
@@ -52,5 +57,9 @@ private:
 
     // 模拟音频采集 (实际需要 QtMultimedia)
     QTimer m_micSimTimer;
+
+    QMediaPlayer* m_player = nullptr;
+    QVideoWidget* m_videoWidget = nullptr;
+    QWidget* m_videoOverlay = nullptr; // 浮动工具栏容器
 };
 #endif // MAINWINDOW_H
